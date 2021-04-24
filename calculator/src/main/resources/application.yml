@@ -1,0 +1,70 @@
+server:
+  servlet:
+    contextPath: /math--tool
+  port: 8080
+  undertow:
+    accesslog:
+      enabled: true
+      rotate: false
+      dir: ./
+      pattern: '%{time,yyyy-MM-dd''T''HH:mm:ss.SSSXXX} %a "%r" %s %B (%D ms)'
+
+management:
+  endpoints:
+    web:
+      base-path: /management
+      exposure:
+        include:
+          - "health"
+          - "env"
+          - "metrics"
+          - "info"
+          - "beans"
+          - "threaddump"
+      path-mapping:
+        info: ping
+      cors:
+        allowed-origins: "*"
+        allowed-methods: GET
+        exposed-headers: Access-Control-Allow-Origin,Access-Control-Allow-Credential
+
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    export:
+      statsd:
+        enabled: false
+        host:
+        port:
+        flavor: telegraf
+    tags:
+      app: @project.artifactId@
+    web:
+      server:
+        request:
+          autotime:
+            enabled: false
+
+spring:
+  main:
+    banner-mode: "off"
+  jackson:
+    default-property-inclusion: non_null
+    serialization:
+      write_dates_as_timestamps: false
+      indent_output: true
+    deserialization:
+      accept_empty_string_as_null_object: true
+
+info:
+  group: test
+  artifact: test
+  description: test
+  version: test
+  title: test
+
+logging:
+  level:
+    com.shellenergy: INFO
+    root: WARN
